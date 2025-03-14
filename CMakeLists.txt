@@ -89,6 +89,7 @@ elseif(USE_CONAN OR USE_VCPKG)
         message(STATUS "Using VCPKG")
         include(
             ${CMAKE_SOURCE_DIR}/external/vcpkg/scripts/buildsystems/vcpkg.cmake)
+            set(CMAKE_TOOLCHAIN_FILE "${CMAKE_SOURCE_DIR}/external/vcpkg/scripts/buildsystems/vcpkg.cmake" CACHE STRING "Vcpkg toolchain file")
     endif()
     find_package(nlohmann_json REQUIRED)
     find_package(fmt REQUIRED)
