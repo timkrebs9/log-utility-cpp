@@ -1,0 +1,94 @@
+name: CMake C++ CI/CD
+
+on:
+  push:
+    branches:
+      - dev
+      - test
+      - staging
+      - main
+  pull_request:
+    branches:
+      - dev
+      - test
+      - staging
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        submodules: true
+
+    - name: Setup vcpkg
+      run: |
+        if [ -d "external/vcpkg" ]; then rm -rf external/vcpkg; fi
+        git clone https://github.com/microsoft/vcpkg.git external/vcpkg
+        ./external/vcpkg/bootstrap-vcpkg.sh
+        ./external/vcpkg/vcpkg install
+      shell: bash
+
+    - name: Install Dependencies (Linux/macOS)
+      if: runner.os != 'Windows'
+      run: sudo apt-get update && sudo apt-get install -y ninja-build
+
+    - name: Install Dependencies (Windows)
+      if: runner.os == 'Windows'
+      run: choco install ninja
+
+    - name: Configure CMake
+      run: |
+        cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/external/vcpkg/scripts/buildsystems/vcpkg.cmake
+      shell: bash
+
+    - name: Build
+      run: cmake --build build --config Debug --parallel
+      shell: bash
+
+    - name: Run Tests
+      run: |
+        cd build
+        ctest --output-on-failure
+      shell: bash
+
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    environment: ${{ github.ref_name }}
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Set Deployment Variables
+      run: |
+        if [[ "${{ github.ref_name }}" == "dev" ]]; then
+          echo "DEPLOY_ENV=development" >> $GITHUB_ENV
+        elif [[ "${{ github.ref_name }}" == "test" ]]; then
+          echo "DEPLOY_ENV=testing" >> $GITHUB_ENV
+        elif [[ "${{ github.ref_name }}" == "staging" ]]; then
+          echo "DEPLOY_ENV=staging" >> $GITHUB_ENV
+        elif [[ "${{ github.ref_name }}" == "main" ]]; then
+          echo "DEPLOY_ENV=production" >> $GITHUB_ENV
+        fi
+
+    - name: Deploy to ${{ env.DEPLOY_ENV }}
+      run: |
+        echo "Deploying to ${{ env.DEPLOY_ENV }}"
+        # Deploy commands (replace with your deployment strategy)
+        # Example: scp, rsync, AWS/GCP/Azure CLI commands, Docker Push, etc.
+
+    - name: Notify Success
+      if: success()
+      run: echo "Deployment successful to ${{ env.DEPLOY_ENV }}"
+
+    - name: Notify Failure
+      if: failure()
+      run: echo "Deployment failed to ${{ env.DEPLOY_ENV }}" && exit 1
