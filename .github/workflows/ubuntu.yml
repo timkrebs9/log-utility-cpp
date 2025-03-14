@@ -11,20 +11,32 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+      with:
+        submodules: true  # Add this to fetch submodules if vcpkg is a submodule
+
+    - name: Setup vcpkg
+      run: |
+        git clone https://github.com/microsoft/vcpkg.git external/vcpkg
+        ./external/vcpkg/bootstrap-vcpkg.sh
+
     - name: install
       run: |
         pip install --user -U gcovr
+
     - name: prepare
       run: |
         make prepare
+
     - name: configure
       run: |
         cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=Debug -DENABLE_COVERAGE=On
+
     - name: building and testing
       run: |
         cmake --build build --config Debug --target coverage -j4
         cd build
         ctest .
+
     - name: Code Coverage Report
       uses: irongut/CodeCoverageSummary@v1.3.0
       with:
@@ -37,6 +49,7 @@ jobs:
         indicators: true
         output: both
         thresholds: '60 80'
+
     - name: Add Coverage PR Comment
       uses: marocchino/sticky-pull-request-comment@v2
       if: github.event_name == 'pull_request'
