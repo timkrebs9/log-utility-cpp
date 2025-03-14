@@ -28,7 +28,7 @@ jobs:
 
     - name: Configure
       run: |
-        cmake -H. -Bbuild -T host=x86 -A x64 -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}\external\vcpkg\scripts\buildsystems\vcpkg.cmake
+        cmake -S . -B build -T host=x86 -A x64 -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}\external\vcpkg\scripts\buildsystems\vcpkg.cmake
 
     - name: Build and Test
       run: |
