@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.22)
 
 project(
-    "CppTemplate"
+    "log-utility-cpp"
     VERSION 1.0.0
     LANGUAGES C CXX)
 
@@ -13,8 +13,8 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Options
 option(USE_CONAN "Whether to use Conan." OFF)
-option(USE_VCPKG "Whether to use VCPKG." OFF)
-option(USE_CPM "Whether to use CPM." ON)
+option(USE_VCPKG "Whether to use VCPKG." ON)
+option(USE_CPM "Whether to use CPM." OFF)
 
 option(ENABLE_WARNINGS "Enable to add warnings to a target." ON)
 option(ENABLE_WARNINGS_AS_ERRORS "Enable to treat warnings as errors." OFF)
@@ -94,6 +94,9 @@ elseif(USE_CONAN OR USE_VCPKG)
     find_package(fmt REQUIRED)
     find_package(spdlog REQUIRED)
     find_package(cxxopts REQUIRED)
+    find_package(azure-identity-cpp CONFIG REQUIRED)
+    find_package(azure-storage-blobs-cpp CONFIG REQUIRED)
+
     if(ENABLE_TESTING)
         find_package(Catch2 REQUIRED)
         list(APPEND CMAKE_MODULE_PATH ${Catch2_SOURCE_DIR}/extras)
@@ -158,6 +161,6 @@ install(
     RUNTIME DESTINATION bin)
 
 install(
-    TARGETS "LibFoo" "LibBar"
+    TARGETS "LibFoo" "LibBar" "ConfigParser" "MetricCollector" "MetricProvider" "AzureUploader"
     ARCHIVE DESTINATION lib
     LIBRARY DESTINATION lib)
