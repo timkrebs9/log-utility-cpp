@@ -12,30 +12,31 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
-        submodules: true  # Add this to fetch submodules if vcpkg is a submodule
+        submodules: true  # Ensures submodules (like vcpkg) are fetched
 
     - name: Setup vcpkg
       run: |
         git clone https://github.com/microsoft/vcpkg.git external/vcpkg
         ./external/vcpkg/bootstrap-vcpkg.sh
+        ./external/vcpkg/vcpkg install nlohmann-json
 
-    - name: install
+    - name: Install dependencies
       run: |
         pip install --user -U gcovr
 
-    - name: prepare
+    - name: Prepare
       run: |
         make prepare
 
-    - name: configure
+    - name: Configure
       run: |
-        cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=Debug -DENABLE_COVERAGE=On
+        cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=Debug -DENABLE_COVERAGE=On -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/external/vcpkg/scripts/buildsystems/vcpkg.cmake
 
-    - name: building and testing
+    - name: Build and Test
       run: |
         cmake --build build --config Debug --target coverage -j4
         cd build
-        ctest .
+        ctest --output-on-failure
 
     - name: Code Coverage Report
       uses: irongut/CodeCoverageSummary@v1.3.0
