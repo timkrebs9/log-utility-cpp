@@ -29,9 +29,7 @@ INPUT                  =    ../src \
 INPUT                       ../include
 INPUT_ENCODING         = UTF-8
 FILE_PATTERNS          = *.c \
-                         *.cc \
                          *.cpp \
-                         *.h \
                          *.hpp \
                          *.md \
                          *.txt

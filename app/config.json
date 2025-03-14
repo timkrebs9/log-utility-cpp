@@ -1,0 +1,36 @@
+{
+    "collection_interval_seconds": 10,
+    "azure": {
+        "storage_account_url": "DefaultEndpointsProtocol=https;AccountName=yourstorageaccount;AccountKey=yourstoragekey;EndpointSuffix=core.windows.net",
+        "storage_account_name": "metrics",
+        "storage_account_key": "2143637865345146728987634235"
+    },
+    "metrics": [
+        {
+            "name": "CPU Usage",
+            "type": "cpu_usage",
+            "enabled": true
+        },
+        {
+            "name": "RAM Usage",
+            "type": "ram_usage",
+            "enabled": true
+        },
+        {
+            "name": "System Disk",
+            "type": "disk_usage",
+            "enabled": true,
+            "parameters": {
+                "mount_point": "/"
+            }
+        },
+        {
+            "name": "Data Disk",
+            "type": "disk_usage",
+            "enabled": false,
+            "parameters": {
+                "mount_point": "/data"
+            }
+        }
+    ]
+}

@@ -1,2 +1,6 @@
 add_subdirectory(foo)
 add_subdirectory(bar)
+add_subdirectory(config_parser)
+add_subdirectory(metric_collector)
+add_subdirectory(metric_provider)
+add_subdirectory(azure_uploader)

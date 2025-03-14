@@ -1,4 +1,4 @@
-set(APP_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/main.cc")
+set(APP_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/main.cpp")
 
 add_executable(${EXECUTABLE_NAME} ${APP_SOURCES})
 
@@ -6,9 +6,15 @@ target_link_libraries(
     ${EXECUTABLE_NAME}
     PRIVATE "LibFoo"
             "LibBar"
+            "ConfigParser"
+            "MetricCollector" 
+            "MetricProvider"
+            "AzureUploader"
             nlohmann_json::nlohmann_json
             fmt::fmt
             spdlog::spdlog
+            Azure::azure-identity 
+            Azure::azure-storage-blobs
             cxxopts::cxxopts)
 
 if(${ENABLE_WARNINGS})

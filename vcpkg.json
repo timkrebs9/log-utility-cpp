@@ -21,6 +21,18 @@
         {
             "name": "catch2",
             "version>=": "3.5.2"
+        },
+        {
+            "name": "opentelemetry-cpp",
+            "version>=": "1.0.0"
+        },
+        {
+            "name": "azure-identity-cpp",
+            "version>=": "1.10.1"
+        },
+        {
+            "name": "azure-storage-blobs-cpp",
+            "version>=": "12.13.0"
         }
     ],
     "overrides": [
