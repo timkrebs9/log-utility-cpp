@@ -28,7 +28,7 @@ What you get is:
 ├── CMakeLists.txt
 ├── app
 │   ├── CMakesLists.txt
-│   └── main.cc
+│   └── main.cpp
 ├── cmake
 │   └── cmake modules
 ├── docs
@@ -43,7 +43,7 @@ What you get is:
 │   └── bar/...
 └── tests
     ├── CMakeLists.txt
-    └── test_*.cc
+    └── test_*.pp
 ```
 
 Library code goes into [src/](src/), main program code in [app/](app) and tests go in [tests/](tests/).

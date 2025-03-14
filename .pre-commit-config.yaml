@@ -10,7 +10,8 @@ repos:
       - id: trailing-whitespace
 
 -   repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: 'v16.0.2'
+    rev: 'v14.0.6'  # Using the older version since you specified types_or
     hooks:
       - id: clang-format
         exclude_types: [javascript, json]
+        types_or: [c, c++, cuda, proto]  # Removed textproto

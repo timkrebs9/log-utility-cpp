@@ -7,13 +7,13 @@ target_link_libraries(
     PRIVATE "LibFoo"
             "LibBar"
             "ConfigParser"
-            "MetricCollector" 
+            "MetricCollector"
             "MetricProvider"
             "AzureUploader"
             nlohmann_json::nlohmann_json
             fmt::fmt
             spdlog::spdlog
-            Azure::azure-identity 
+            Azure::azure-identity
             Azure::azure-storage-blobs
             cxxopts::cxxopts)
 

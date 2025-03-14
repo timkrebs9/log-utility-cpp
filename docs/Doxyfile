@@ -6,7 +6,7 @@
 # Project related configuration options
 #---------------------------------------------------------------------------
 DOXYFILE_ENCODING       = UTF-8
-PROJECT_NAME            = "C++ Project Template"
+PROJECT_NAME            = "LogUtility"
 PROJECT_NUMBER          = 1.0.0
 PROJECT_BRIEF           =
 PROJECT_LOGO            =
