@@ -11,12 +11,23 @@ jobs:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2
+      with:
+        submodules: true  # Add this to fetch submodules if vcpkg is a submodule
+
+    # If vcpkg is not a submodule, add these steps to download and bootstrap it
+    - name: Setup vcpkg
+      run: |
+        git clone https://github.com/microsoft/vcpkg.git external/vcpkg
+        ./external/vcpkg/bootstrap-vcpkg.sh
+
     - name: prepare
       run: |
         make prepare
+
     - name: configure
       run: |
         cmake -H. -Bbuild -DCMAKE_BUILD_TYPE="Debug"
+
     - name: building and testing
       run: |
         cmake --build build --config Debug
