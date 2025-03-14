@@ -11,14 +11,27 @@ jobs:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2
-    - name: prepare
+      with:
+        submodules: true  # Ensures submodules (like vcpkg) are fetched
+
+    - name: Setup vcpkg
+      run: |
+        if (Test-Path "external/vcpkg") { Remove-Item -Recurse -Force "external/vcpkg" }
+        git clone https://github.com/microsoft/vcpkg.git external/vcpkg
+        .\external\vcpkg\bootstrap-vcpkg.bat
+        .\external\vcpkg\vcpkg.exe install
+
+
+    - name: Prepare
       run: |
         make prepare
-    - name: configure
+
+    - name: Configure
       run: |
-        cmake -H"." -Bbuild -T host=x86 -A x64 -DCMAKE_BUILD_TYPE="Debug"
-    - name: building and testing
+        cmake -H. -Bbuild -T host=x86 -A x64 -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}\external\vcpkg\scripts\buildsystems\vcpkg.cmake
+
+    - name: Build and Test
       run: |
         cmake --build build --config Debug
         cd build
-        ctest .
+        ctest --output-on-failure
