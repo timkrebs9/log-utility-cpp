@@ -19,7 +19,8 @@ jobs:
         if [ -d "external/vcpkg" ]; then rm -rf external/vcpkg; fi
         git clone https://github.com/microsoft/vcpkg.git external/vcpkg
         ./external/vcpkg/bootstrap-vcpkg.sh
-        ./external/vcpkg/vcpkg install nlohmann-json
+        ./external/vcpkg/vcpkg install
+
 
 
     - name: Install dependencies
