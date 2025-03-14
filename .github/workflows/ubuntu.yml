@@ -16,9 +16,10 @@ jobs:
 
     - name: Setup vcpkg
       run: |
+        if (Test-Path "external/vcpkg") { Remove-Item -Recurse -Force "external/vcpkg" }
         git clone https://github.com/microsoft/vcpkg.git external/vcpkg
-        ./external/vcpkg/bootstrap-vcpkg.sh
-        ./external/vcpkg/vcpkg install nlohmann-json
+        .\external\vcpkg\bootstrap-vcpkg.bat
+        .\external\vcpkg\vcpkg.exe install nlohmann-json
 
     - name: Install dependencies
       run: |
