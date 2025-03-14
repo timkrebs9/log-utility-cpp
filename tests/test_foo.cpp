@@ -1,6 +1,6 @@
 #include <catch2/catch_test_macros.hpp>
 
-#include "foo.h"
+#include "foo.hpp"
 
 TEST_CASE("factorial1")
 {

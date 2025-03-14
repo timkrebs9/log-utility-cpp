@@ -2,7 +2,7 @@
 
 #include "nlohmann/json.hpp"
 
-#include "foo.h"
+#include "foo.hpp"
 
 int print_hello_world()
 {

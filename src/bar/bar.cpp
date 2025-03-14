@@ -2,7 +2,7 @@
 
 #include "nlohmann/json.hpp"
 
-#include "bar.h"
+#include "bar.hpp"
 
 int fn_branch(bool do_branch1, bool do_branch2)
 {

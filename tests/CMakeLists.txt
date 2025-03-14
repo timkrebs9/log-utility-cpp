@@ -1,10 +1,10 @@
 include(Catch)
 
-add_executable("UnitTestFoo" "test_foo.cc")
+add_executable("UnitTestFoo" "test_foo.cpp")
 target_link_libraries("UnitTestFoo" PUBLIC "LibFoo")
 target_link_libraries("UnitTestFoo" PRIVATE Catch2::Catch2WithMain)
 
-add_executable("UnitTestBar" "test_bar.cc")
+add_executable("UnitTestBar" "test_bar.cpp")
 target_link_libraries("UnitTestBar" PUBLIC "LibBar")
 target_link_libraries("UnitTestBar" PRIVATE Catch2::Catch2WithMain)
 
