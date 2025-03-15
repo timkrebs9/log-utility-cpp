@@ -40,7 +40,7 @@ jobs:
     - name: Deploy to GitHub Pages
       uses: Cecilapp/GitHub-Pages-deploy@v3
       env:
-        GITHUB_TOKEN: ${{ secrets.PAGES_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GH_PAGES_DEPLOY_TOKEN }}
       with:
         email: 41898282+github-actions[bot]@users.noreply.github.com
         build_dir: ./docs/html
