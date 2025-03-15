@@ -23,7 +23,7 @@ jobs:
       run: |
         git clone https://github.com/microsoft/vcpkg.git
         ./vcpkg/bootstrap-vcpkg.sh
-        ./vcpkg/vcpkg install nlohmann-json fmt spdlog cxxopts azure-identity-cpp azure-storage-blobs-cpp
+        ./vcpkg/vcpkg install  # Use manifest mode (reads from vcpkg.json)
 
     - name: Prepare
       run: |
