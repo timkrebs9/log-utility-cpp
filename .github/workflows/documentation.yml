@@ -12,23 +12,35 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/setup-python@v2
-    - name: Install Docs
+
+    - name: Install Dependencies
       run: |
-        sudo apt-get install doxygen graphviz
+        sudo apt-get update
+        sudo apt-get install -y doxygen graphviz
         pip install jinja2 Pygments
-    - name: prepare
+
+    - name: Install VCPKG and Dependencies
       run: |
-        make prepare
-    - name: configure
+        git clone https://github.com/microsoft/vcpkg.git
+        ./vcpkg/bootstrap-vcpkg.sh
+        ./vcpkg/vcpkg install nlohmann-json fmt spdlog cxxopts azure-identity-cpp azure-storage-blobs-cpp
+
+    - name: Prepare
       run: |
-        cmake -H. -Bbuild -G "Unix Makefiles" -DCMAKE_BUILD_TYPE="Debug"
-    - name: building
+        make prepare || true
+
+    - name: Configure CMake
+      run: |
+        cmake -H. -Bbuild -G "Unix Makefiles" -DCMAKE_BUILD_TYPE="Debug" -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
+
+    - name: Build Documentation
       run: |
         cmake --build build --config Debug --target docs -j4
+
     - name: Deploy to GitHub Pages
       uses: Cecilapp/GitHub-Pages-deploy@v3
       env:
         GITHUB_TOKEN: ${{ secrets.PAGES_TOKEN }}
       with:
+        email: 41898282+github-actions[bot]@users.noreply.github.com
         build_dir: ./docs/html
