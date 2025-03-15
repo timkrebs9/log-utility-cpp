@@ -68,6 +68,10 @@ if(ENABLE_LTO)
     include(LTO)
 endif()
 
+if(APPLE)
+    set(CMAKE_OSX_ARCHITECTURES "arm64" CACHE STRING "Build architectures for macOS" FORCE)
+endif()
+
 # EXTERNAL LIBRARIES
 
 if(USE_CPM)
@@ -87,9 +91,14 @@ elseif(USE_CONAN OR USE_VCPKG)
         include(${CMAKE_BINARY_DIR}/conan_toolchain.cmake)
     elseif(USE_VCPKG)
         message(STATUS "Using VCPKG")
-        include(
-            ${CMAKE_SOURCE_DIR}/external/vcpkg/scripts/buildsystems/vcpkg.cmake)
-            set(CMAKE_TOOLCHAIN_FILE "${CMAKE_SOURCE_DIR}/external/vcpkg/scripts/buildsystems/vcpkg.cmake" CACHE STRING "Vcpkg toolchain file")
+        set(CMAKE_TOOLCHAIN_FILE "${CMAKE_SOURCE_DIR}/external/vcpkg/scripts/buildsystems/vcpkg.cmake" CACHE STRING "Vcpkg toolchain file")
+
+        find_package(nlohmann_json CONFIG REQUIRED)
+        find_package(fmt CONFIG REQUIRED)
+        find_package(spdlog CONFIG REQUIRED)
+        find_package(cxxopts CONFIG REQUIRED)
+        find_package(azure-identity-cpp CONFIG REQUIRED)
+        find_package(azure-storage-blobs-cpp CONFIG REQUIRED)
     endif()
     find_package(nlohmann_json REQUIRED)
     find_package(fmt REQUIRED)
